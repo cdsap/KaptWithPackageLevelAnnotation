@@ -1,11 +1,11 @@
 package com.agoda.generator.annotations
 
-import com.agoda.mobile.consumer.domain.experiments.ExperimentId
+import com.kaptwithannotationlevel.aptmodule.annotations.ExperimentDesc
 import javax.lang.model.element.Element
 import javax.lang.model.type.TypeMirror
 
 
-class ExperimentedTestedClass(val typeElement: Element, val values: Array<ExperimentId>) {
+class ExperimentedTestedClass(val typeElement: Element, val values: Array<ExperimentDesc>) {
 
     val type: TypeMirror
         get() = typeElement.asType()

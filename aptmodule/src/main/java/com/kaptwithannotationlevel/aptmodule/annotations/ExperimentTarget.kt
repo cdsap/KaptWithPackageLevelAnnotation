@@ -1,6 +1,6 @@
 package com.agoda.generator.annotations
 
-import com.agoda.mobile.consumer.domain.experiments.ExperimentId
+import com.kaptwithannotationlevel.aptmodule.annotations.ExperimentDesc
 
 
-annotation class ExperimentTarget(val values: Array<ExperimentId> = [])
+annotation class ExperimentTarget(val values: Array<ExperimentDesc> = [])

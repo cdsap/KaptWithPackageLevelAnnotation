@@ -4,8 +4,8 @@ import com.agoda.generator.annotations.AnnotationProvider
 import com.agoda.generator.annotations.ExperimentTarget
 import com.agoda.generator.annotations.ExperimentedTestedClass
 import com.agoda.generator.entities.Meta
-import com.agoda.mobile.consumer.domain.experiments.ExperimentId
-import com.agoda.mobile.consumer.espresso.annotations.WithVariantB
+import com.kaptwithannotationlevel.aptmodule.annotations.ExperimentDesc
+import com.kaptwithannotationlevel.aptmodule.annotations.VariantB
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
@@ -69,7 +69,7 @@ class Kakatua(private val environment: ProcessingEnvironment) {
     private fun generateTestMethods(
             classBuilder: TypeSpec.Builder,
             experimentedClass: ExperimentedTestedClass,
-            values: Array<ExperimentId>
+            values: Array<ExperimentDesc>
     ) {
 
         experimentedClass.typeElement.enclosedElements
@@ -90,10 +90,10 @@ class Kakatua(private val environment: ProcessingEnvironment) {
                 }
     }
 
-    private fun generateTestAnnotations(builder: FunSpec.Builder, element: Element, values: Array<ExperimentId>) {
+    private fun generateTestAnnotations(builder: FunSpec.Builder, element: Element, values: Array<ExperimentDesc>) {
         var contents = false
         element.annotationMirrors.forEach {
-            if (it.annotationType.asElement().simpleName.toString() == WithVariantB::class.simpleName) {
+            if (it.annotationType.asElement().simpleName.toString() == VariantB::class.simpleName) {
                 contents = true
             }
         }
@@ -107,7 +107,7 @@ class Kakatua(private val environment: ProcessingEnvironment) {
 
         if (!contents) {
             builder.addAnnotation(
-                    AnnotationSpec.builder(WithVariantB::class.java)
+                    AnnotationSpec.builder(VariantB::class.java)
                             .addMember(annotationProvider.get(values)).build()
             )
         }

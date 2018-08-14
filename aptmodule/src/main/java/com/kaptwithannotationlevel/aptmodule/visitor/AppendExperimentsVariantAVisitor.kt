@@ -1,6 +1,6 @@
 package com.agoda.generator.visitor
 
-import com.agoda.mobile.consumer.domain.experiments.ExperimentId
+import com.kaptwithannotationlevel.aptmodule.annotations.ExperimentDesc
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.CodeBlock
 import javax.lang.model.element.AnnotationMirror
@@ -12,7 +12,7 @@ import javax.lang.model.util.SimpleAnnotationValueVisitor7
 class AppendExperimentsVariantAVisitor(
         private val builder: CodeBlock.Builder,
         private val currentExperiments: List<AnnotationValue>,
-        private val newExperiments: Array<ExperimentId>
+        private val newExperiments: Array<ExperimentDesc>
 ) : SimpleAnnotationValueVisitor7<CodeBlock.Builder, String>(builder) {
 
     override fun defaultAction(o: Any, name: String) = builder.add(CodeBlock.of("%S", "$o"))

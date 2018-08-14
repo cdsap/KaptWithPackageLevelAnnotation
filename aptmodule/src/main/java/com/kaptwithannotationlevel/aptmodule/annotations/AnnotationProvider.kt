@@ -1,11 +1,9 @@
 package com.agoda.generator.annotations
 
-import com.agoda.generator.visitor.AppendExperimentsVariantAVisitor
 import com.agoda.generator.visitor.AppendExperimentsVariantBVisitor
 import com.agoda.generator.visitor.DefaultVisitor
-import com.agoda.mobile.consumer.domain.experiments.ExperimentId
-import com.agoda.mobile.consumer.espresso.annotations.WithVariantA
-import com.agoda.mobile.consumer.espresso.annotations.WithVariantB
+import com.kaptwithannotationlevel.aptmodule.annotations.ExperimentDesc
+import com.kaptwithannotationlevel.aptmodule.annotations.VariantB
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.asClassName
@@ -15,16 +13,12 @@ import javax.lang.model.element.TypeElement
 class AnnotationProvider {
 
 
-    fun get(it: AnnotationMirror, values: Array<ExperimentId>): AnnotationSpec {
+    fun get(it: AnnotationMirror, values: Array<ExperimentDesc>): AnnotationSpec {
         val element = it.annotationType.asElement() as TypeElement
         val builder = AnnotationSpec.builder(element.asClassName())
         val member = CodeBlock.builder()
         val visitor = when (it.annotationType.asElement().simpleName.toString()) {
-            WithVariantA::class.simpleName -> AppendExperimentsVariantAVisitor(member, it.elementValues.toList()
-                    .flatMap {
-                        listOf(it.second)
-                    }, values)
-            WithVariantB::class.simpleName -> AppendExperimentsVariantBVisitor(member, it.elementValues.toList()
+            VariantB::class.simpleName -> AppendExperimentsVariantBVisitor(member, it.elementValues.toList()
                     .flatMap {
                         listOf(it.second)
                     }, values)
@@ -44,14 +38,14 @@ class AnnotationProvider {
         return builder.build()
     }
 
-    fun get(values: Array<ExperimentId>): CodeBlock {
+    fun get(values: Array<ExperimentDesc>): CodeBlock {
         val member = CodeBlock.builder()
         var index = 0
         for (executableElement in values) {
             if (index > 0) {
-                member.add(",\n${executableElement.declaringClass.name}.$executableElement")
+                member.add(",\n${executableElement.javaClass}.$executableElement")
             } else {
-                member.add("${executableElement.declaringClass.name}.$executableElement")
+                member.add("${executableElement.javaClass}.$executableElement")
                 index++
             }
         }
